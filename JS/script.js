@@ -11,32 +11,16 @@ var FLOOR_TILE = 0;
 var WALL_TILE = 1;
 var PLAYER_TILE = 2;
 var BOX_TILE = 3;
-var DBOX_TILE = 4;
-var Winning_TILE = 5;
-
-var CurrentMap = map1;
-
 
 var map1 = [
-    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,0,1,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-    [1,0,0,0,0,0,2,3,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-]
-
-var map2 = [
-    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-    [1,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,0,0,0,0,0,0,0,0,1,0,0,0,1],
+    [1,0,1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,1,1,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,2,3,0,0,1,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 ]
 
 function start() {
@@ -52,9 +36,9 @@ function start() {
 
 function findPlayerI() {
    
-    for(var j = 0; j < CurrentMap.length; j ++){
-        for(var i = 0; i < CurrentMap[0].length; i ++) {
-            if (CurrentMap[j][i] == PLAYER_TILE) {
+    for(var j = 0; j < map1.length; j ++){
+        for(var i = 0; i < map1[0].length; i ++) {
+            if (map1[j][i] == PLAYER_TILE) {
                 
                 return i;
             }
@@ -64,9 +48,9 @@ function findPlayerI() {
 
 function findPlayerJ() {
     
-    for(var j = 0; j < CurrentMap.length; j ++){
-        for(var i = 0; i < CurrentMap[0].length; i ++) {
-            if(CurrentMap[j][i] == PLAYER_TILE){
+    for(var j = 0; j < map1.length; j ++){
+        for(var i = 0; i < map1[0].length; i ++) {
+            if(map1[j][i] == PLAYER_TILE){
                 
                 return j;
             }
@@ -137,7 +121,7 @@ function moveBox(i, j, dir){
     var nexti = nextPositionI(i, j, dir);
     var nextj = nextPositionJ(i, j, dir);
     
-    while(CurrentMap[nextj][nexti] != WALL_TILE && CurrentMap[nextj][nexti] != BOX_TILE) {
+    while(map1[nextj][nexti] != WALL_TILE && map1[nextj][nexti] != BOX_TILE) {
         var tempi = nexti;
         var tempj = nextj;
         
@@ -147,14 +131,8 @@ function moveBox(i, j, dir){
         nextj = nextPositionJ(tempi, tempj, dir);
     }
     
-    CurrentMap[j][i] = FLOOR_TILE;
-    CurrentMap[boxj][boxi] = BOX_TILE;
-    
-    if(BOX_TILE[boxj][boxi] == Winning_TILE){
-        
-        
-        
-    }
+    map1[j][i] = FLOOR_TILE;
+    map1[boxj][boxi] = BOX_TILE;
         
 }
 
@@ -166,34 +144,29 @@ function movePlayer(dir) {
     var nexti = nextPositionI(pi, pj, dir);
     var nextj = nextPositionJ(pi, pj, dir);
     
-    if (CurrentMap[nextj][nexti] == BOX_TILE){
+    if (map1[nextj][nexti] == BOX_TILE){
         
         moveBox(nexti, nextj, dir);
         
         return;
     }
-    if (CurrentMap[nextj][nexti] != FLOOR_TILE){
+    if (map1[nextj][nexti] != FLOOR_TILE){
         
         return;
     }
     
-    
-    CurrentMap[pj][pi] = FLOOR_TILE;
-    CurrentMap[nextj][nexti] = PLAYER_TILE;
-    
-    
+    map1[pj][pi] = FLOOR_TILE;
+    map1[nextj][nexti] = PLAYER_TILE;
     
 }
     
+function paintMap1(){
 
-//Målar ut karta    
-function paintCurrentMap(){
-
-    for(var j = 0; j < CurrentMap.length; j ++){
+    for(var j = 0; j < map1.length; j ++){
     
-        for(var i = 0; i < CurrentMap[0].length; i ++) {
+        for(var i = 0; i < map1[0].length; i ++) {
             
-            switch (CurrentMap[j][i]) {
+            switch (map1[j][i]) {
                     
                 //Paint Wall    
                 case WALL_TILE:
@@ -228,18 +201,8 @@ function paintCurrentMap(){
                     ctx.fillStyle = "rgb(16, 201, 65)";
                     ctx.fillRect(i*TILE_SIZE, j*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                     
-                    break;  
-                    
-                //Paint Winning Tile   
-                case Winning_TILE:
-                    
-                    ctx.fillStyle = "rgb(20, 137, 51)";
-                    ctx.fillRect(i*TILE_SIZE, j*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                    
-                    
-                    break;    
+                    break;   
             }
-            
             
             
             //Draws Grid
@@ -267,9 +230,8 @@ function update(){
     
     ctx.clearRect(0, 0, c.width, c.height);
 
-    paintCurrentMap(); 
+    paintMap1(); 
     zoom();
-    
 
 }
 
