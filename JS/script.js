@@ -11,15 +11,16 @@ var FLOOR_TILE = 0;
 var WALL_TILE = 1;
 var PLAYER_TILE = 2;
 var BOX_TILE = 3;
-var WINNING_TILE = 4
+var DUMMY_TILE = 4;
+var WINNING_TILE = 5;
 
 
 var map1 =[ [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
             [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-            [1,0,0,0,0,0,2,3,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,1,5,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,1],
+            [1,0,1,1,0,0,0,0,0,0,0,0,3,2,4,0,1,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,1,1],
+            [1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 ]       
@@ -116,13 +117,34 @@ function nextPositionJ(i, j, dir) {
     
 }
 
+function moveDummy(i, j, dir){
+    var boxi = i;
+    var boxj = j;
+    var nexti = nextPositionI(i, j, dir);
+    var nextj = nextPositionJ(i, j, dir);
+    
+    while(map1[nextj][nexti] != WALL_TILE && map1[nextj][nexti] != BOX_TILE && map1[nextj][nexti] != DUMMY_TILE) {
+        var tempi = nexti;
+        var tempj = nextj;
+        
+        boxi = nexti;
+        boxj = nextj;
+        nexti = nextPositionI(tempi, tempj, dir);
+        nextj = nextPositionJ(tempi, tempj, dir);
+    }
+    
+    map1[j][i] = FLOOR_TILE;
+    map1[boxj][boxi] = DUMMY_TILE;
+    
+}
+
 function moveBox(i, j, dir){
     var boxi = i;
     var boxj = j;
     var nexti = nextPositionI(i, j, dir);
     var nextj = nextPositionJ(i, j, dir);
     
-    while(map1[nextj][nexti] != WALL_TILE && map1[nextj][nexti] != BOX_TILE) {
+    while(map1[nextj][nexti] != WALL_TILE && map1[nextj][nexti] != BOX_TILE && map1[nextj][nexti] != DUMMY_TILE) {
         var tempi = nexti;
         var tempj = nextj;
         
@@ -151,6 +173,14 @@ function movePlayer(dir) {
         
         return;
     }
+    
+    if (map1[nextj][nexti] == DUMMY_TILE){
+        
+        moveDummy(nexti, nextj, dir);
+        
+        return;
+    }
+    
     if (map1[nextj][nexti] != FLOOR_TILE){
         
         return;
@@ -202,7 +232,15 @@ function paintMap1(){
                     ctx.fillStyle = "rgb(16, 201, 65)";
                     ctx.fillRect(i*TILE_SIZE, j*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                     
-                    break;   
+                    break; 
+                    
+                //Paint Dummy Box  
+                case DUMMY_TILE:
+                    
+                    ctx.fillStyle = "rgb(126, 114, 19)";
+                    ctx.fillRect(i*TILE_SIZE, j*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    
+                    break;    
                     
                 //Paint Winning Tile   
                 case WINNING_TILE:
