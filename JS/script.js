@@ -14,8 +14,10 @@ var BOX_TILE = 3;
 var DUMMY_TILE = 4;
 var WINNING_TILE = 5;
 
+var LEVEL = 0;
 
-var map1 =[ [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+
+var map1 =[[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
             [1,0,0,0,0,0,0,0,0,1,0,0,4,0,0,0,0,0,0,0,0,0,0,1],
             [1,0,1,5,0,0,0,0,0,0,0,3,2,4,0,0,0,0,0,0,0,0,0,1],
             [1,0,1,1,0,0,0,0,0,0,0,0,4,0,0,0,1,0,0,0,0,0,0,1],
@@ -23,7 +25,20 @@ var map1 =[ [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
             [1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-]       
+]     
+
+
+var map2 =[ [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,4,2,4,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,1,5,1,0,0,0,0,0,0,0,0,0,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+]
+
+var maps= [map1, map2];
 
 function start() {
 
@@ -38,9 +53,9 @@ function start() {
 
 function findPlayerI() {
    
-    for(var j = 0; j < map1.length; j ++){
-        for(var i = 0; i < map1[0].length; i ++) {
-            if (map1[j][i] == PLAYER_TILE) {
+    for(var j = 0; j < LEVEL.length; j ++){
+        for(var i = 0; i < LEVEL[0].length; i ++) {
+            if (LEVEL[j][i] == PLAYER_TILE) {
                 
                 return i;
             }
@@ -50,9 +65,9 @@ function findPlayerI() {
 
 function findPlayerJ() {
     
-    for(var j = 0; j < map1.length; j ++){
-        for(var i = 0; i < map1[0].length; i ++) {
-            if(map1[j][i] == PLAYER_TILE){
+    for(var j = 0; j < LEVEL.length; j ++){
+        for(var i = 0; i < LEVEL[0].length; i ++) {
+            if(LEVEL[j][i] == PLAYER_TILE){
                 
                 return j;
             }
@@ -123,7 +138,7 @@ function moveDummy(i, j, dir){
     var nexti = nextPositionI(i, j, dir);
     var nextj = nextPositionJ(i, j, dir);
     
-    while(map1[nextj][nexti] != WALL_TILE && map1[nextj][nexti] != BOX_TILE && map1[nextj][nexti] != DUMMY_TILE) {
+    while(LEVEL[nextj][nexti] != WALL_TILE && LEVEL[nextj][nexti] != BOX_TILE && LEVEL[nextj][nexti] != DUMMY_TILE) {
         var tempi = nexti;
         var tempj = nextj;
         
@@ -133,8 +148,8 @@ function moveDummy(i, j, dir){
         nextj = nextPositionJ(tempi, tempj, dir);
     }
     
-    map1[j][i] = FLOOR_TILE;
-    map1[dummyj][dummyi] = DUMMY_TILE;
+    LEVEL[j][i] = FLOOR_TILE;
+    LEVEL[dummyj][dummyi] = DUMMY_TILE;
     
 }
 
@@ -144,7 +159,7 @@ function moveBox(i, j, dir){
     var nexti = nextPositionI(i, j, dir);
     var nextj = nextPositionJ(i, j, dir);
     
-    while(map1[nextj][nexti] != WALL_TILE && map1[nextj][nexti] != BOX_TILE && map1[nextj][nexti] != DUMMY_TILE) {
+    while(LEVEL[nextj][nexti] != WALL_TILE && LEVEL[nextj][nexti] != BOX_TILE && LEVEL[nextj][nexti] != DUMMY_TILE) {
         var tempi = nexti;
         var tempj = nextj;
         
@@ -153,7 +168,7 @@ function moveBox(i, j, dir){
         nexti = nextPositionI(tempi, tempj, dir);
         nextj = nextPositionJ(tempi, tempj, dir);
         
-            if(map1[boxj][boxi] == WINNING_TILE) {
+            if(LEVEL[boxj][boxi] == WINNING_TILE) {
         
                 var win = prompt("You Won!");
         
@@ -162,8 +177,8 @@ function moveBox(i, j, dir){
     }
     
     
-    map1[j][i] = FLOOR_TILE;
-    map1[boxj][boxi] = BOX_TILE;
+    LEVEL[j][i] = FLOOR_TILE;
+    LEVEL[boxj][boxi] = BOX_TILE;
         
 }
 
@@ -175,37 +190,37 @@ function movePlayer(dir) {
     var nexti = nextPositionI(pi, pj, dir);
     var nextj = nextPositionJ(pi, pj, dir);
     
-    if (map1[nextj][nexti] == BOX_TILE){
+    if (LEVEL[nextj][nexti] == BOX_TILE){
         
         moveBox(nexti, nextj, dir);
         
         return;
     }
     
-    if (map1[nextj][nexti] == DUMMY_TILE){
+    if (LEVEL[nextj][nexti] == DUMMY_TILE){
         
         moveDummy(nexti, nextj, dir);
         
         return;
     }
     
-    if (map1[nextj][nexti] != FLOOR_TILE){
+    if (LEVEL[nextj][nexti] != FLOOR_TILE){
         
         return;
     }
     
-    map1[pj][pi] = FLOOR_TILE;
-    map1[nextj][nexti] = PLAYER_TILE;
+    LEVEL[pj][pi] = FLOOR_TILE;
+    LEVEL[nextj][nexti] = PLAYER_TILE;
     
 }
     
-function paintMap1(){
+function paintLEVEL(){
 
-    for(var j = 0; j < map1.length; j ++){
+    for(var j = 0; j < LEVEL.length; j ++){
     
-        for(var i = 0; i < map1[0].length; i ++) {
+        for(var i = 0; i < LEVEL[0].length; i ++) {
             
-            switch (map1[j][i]) {
+            switch (LEVEL[j][i]) {
                     
                 //Paint Wall    
                 case WALL_TILE:
@@ -285,7 +300,7 @@ function update(){
     
     ctx.clearRect(0, 0, c.width, c.height);
 
-    paintMap1(); 
+    paintLEVEL(); 
     zoom();
 
 }
