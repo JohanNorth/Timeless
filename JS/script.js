@@ -16,10 +16,10 @@ var WINNING_TILE = 5;
 
 
 var map1 =[ [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-            [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,1,5,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,1],
-            [1,0,1,1,0,0,0,0,0,0,0,0,3,2,4,0,1,0,0,0,0,0,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,1,1],
+            [1,0,0,0,0,0,0,0,0,1,0,0,4,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,1,5,0,0,0,0,0,0,0,3,2,4,0,0,0,0,0,0,0,0,0,1],
+            [1,0,1,1,0,0,0,0,0,0,0,0,4,0,0,0,1,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
             [1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
@@ -118,8 +118,8 @@ function nextPositionJ(i, j, dir) {
 }
 
 function moveDummy(i, j, dir){
-    var boxi = i;
-    var boxj = j;
+    var dummyi = i;
+    var dummyj = j;
     var nexti = nextPositionI(i, j, dir);
     var nextj = nextPositionJ(i, j, dir);
     
@@ -127,14 +127,14 @@ function moveDummy(i, j, dir){
         var tempi = nexti;
         var tempj = nextj;
         
-        boxi = nexti;
-        boxj = nextj;
+        dummyi = nexti;
+        dummyj = nextj;
         nexti = nextPositionI(tempi, tempj, dir);
         nextj = nextPositionJ(tempi, tempj, dir);
     }
     
     map1[j][i] = FLOOR_TILE;
-    map1[boxj][boxi] = DUMMY_TILE;
+    map1[dummyj][dummyi] = DUMMY_TILE;
     
 }
 
@@ -152,7 +152,15 @@ function moveBox(i, j, dir){
         boxj = nextj;
         nexti = nextPositionI(tempi, tempj, dir);
         nextj = nextPositionJ(tempi, tempj, dir);
+        
+            if(map1[boxj][boxi] == WINNING_TILE) {
+        
+                var win = prompt("You Won!");
+        
+                    alert(win);
+        }
     }
+    
     
     map1[j][i] = FLOOR_TILE;
     map1[boxj][boxi] = BOX_TILE;
@@ -268,7 +276,7 @@ function paintMap1(){
 
 function zoom(){
     
-    document.body.style.zoom = "100%"; 
+    document.body.style.zoom = "200%"; 
     
 }
         
